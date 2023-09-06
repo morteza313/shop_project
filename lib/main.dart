@@ -1,7 +1,5 @@
-import 'package:apple_shop/constants/colors.dart';
 import 'package:apple_shop/widgets/banner_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
@@ -16,7 +14,39 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: SafeArea(
-          child: BannerSlider(),
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  height: 56,
+                  width: 56,
+                  decoration: ShapeDecoration(
+                    color: Colors.red,
+                    shadows: [
+                      BoxShadow(
+                        color: Colors.red,
+                        blurRadius: 40,
+                        spreadRadius: -6,
+                        offset: Offset(0.0, 15),
+                      )
+                    ],
+                    shape: ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.ads_click_outlined,
+                    color: Colors.white,
+                    size: 26,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text('data')
+              ],
+            ),
+          ),
         ),
       ),
     );
