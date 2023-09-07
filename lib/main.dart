@@ -1,213 +1,159 @@
+import 'dart:ui';
+
 import 'package:apple_shop/constants/colors.dart';
+import 'package:apple_shop/screens/category_screen.dart';
+import 'package:apple_shop/screens/home_screen.dart';
+import 'package:apple_shop/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main(List<String> args) {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int selectedBottomNavigationIndex = 0;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
-        body: SafeArea(
-          child: Center(
-            child: Container(
-              height: 216,
-              width: 160,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(15),
+        body: IndexedStack(
+          index: selectedBottomNavigationIndex,
+          children: getScreen(),
+        ),
+        appBar: AppBar(),
+        bottomNavigationBar: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(
+              sigmaX: 50,
+              sigmaY: 50,
+            ),
+            child: BottomNavigationBar(
+              currentIndex: selectedBottomNavigationIndex,
+              onTap: (value) {
+                setState(() {
+                  selectedBottomNavigationIndex = value;
+                });
+              },
+              unselectedLabelStyle: const TextStyle(
+                fontFamily: 'sb',
+                fontSize: 10,
+                color: Colors.black,
+              ),
+              selectedLabelStyle: const TextStyle(
+                fontFamily: 'sb',
+                fontSize: 10,
+                color: CustomColors.blue,
+              ),
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_profile.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Container(
+                      child:
+                          Image.asset('assets/images/icon_profile_active.png'),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(0.0, 10),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  label: 'حساب کاربری',
                 ),
-              ),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_basket.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Container(
+                      child:
+                          Image.asset('assets/images/icon_basket_active.png'),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(0.0, 10),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Stack(
-                    alignment: AlignmentDirectional.center,
-                    children: [
-                      Expanded(
-                        child: Container(),
+                  label: 'سبد خرید',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_category.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Container(
+                      child:
+                          Image.asset('assets/images/icon_category_active.png'),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(0.0, 10),
+                          )
+                        ],
                       ),
-                      Image.asset('assets/images/iphone.png'),
-                      Positioned(
-                        top: 0,
-                        right: 10,
-                        child: SizedBox(
-                            height: 24,
-                            child: Image.asset(
-                                'assets/images/active_fav_product.png')),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 5,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15),
-                            ),
-                          ),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 2,
-                              horizontal: 6,
-                            ),
-                            child: Text(
-                              '%3',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'sb',
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const Text(
-                        'آیفون 13 پرومکس',
-                        style: TextStyle(
-                          fontFamily: 'sm',
-                          fontSize: 14,
-                        ),
+                  label: 'دسته بندی',
+                ),
+                BottomNavigationBarItem(
+                  icon: Image.asset('assets/images/icon_home.png'),
+                  activeIcon: Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Container(
+                      child: Image.asset('assets/images/icon_home_active.png'),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.blue,
+                            blurRadius: 20,
+                            spreadRadius: -7,
+                            offset: Offset(0.0, 10),
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 53,
-                        decoration: const BoxDecoration(
-                          color: CustomColors.blue,
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(15),
-                            bottomRight: Radius.circular(15),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: CustomColors.blue,
-                              blurRadius: 25,
-                              spreadRadius: -12,
-                              offset: Offset(0.0, 15),
-                            )
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              const Text(
-                                'تومان',
-                                style: TextStyle(
-                                  fontFamily: 'sm',
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '49800000',
-                                    style: TextStyle(
-                                      fontFamily: 'sm',
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                                  ),
-                                  Text(
-                                    '48800000',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                      fontFamily: 'sm',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              SizedBox(
-                                height: 24,
-                                child: Image.asset(
-                                    'assets/images/icon_right_arrow_cricle.png'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ],
-              ),
+                  label: 'خانه',
+                ),
+              ],
             ),
           ),
         ),
       ),
     );
   }
-}
 
-class CategoryHorizontalItemList extends StatelessWidget {
-  const CategoryHorizontalItemList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 56,
-          width: 56,
-          decoration: ShapeDecoration(
-            color: Colors.red,
-            shadows: const [
-              BoxShadow(
-                color: Colors.red,
-                blurRadius: 25,
-                spreadRadius: -12,
-                offset: Offset(0.0, 15),
-              )
-            ],
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            ),
-          ),
-          child: const Icon(
-            Icons.ads_click_outlined,
-            color: Colors.white,
-            size: 26,
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          'همه',
-          style: TextStyle(
-            fontFamily: 'SB',
-            fontSize: 12,
-          ),
-        ),
-      ],
-    );
+  List<Widget> getScreen() {
+    return [
+      HomeScreen(),
+      CategoryScreen(),
+      ProductListScreen(),
+      CategoryScreen(),
+    ];
   }
 }
