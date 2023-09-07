@@ -1,3 +1,4 @@
+import 'package:apple_shop/widgets/category_icon_item_chip.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/colors.dart';
@@ -94,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return const Padding(
                         padding: EdgeInsets.only(left: 20),
-                        child: CategoryHorizontalItemList(),
+                        child: CategoryHorizontalItemChip(),
                       );
                     },
                   ),
@@ -209,53 +210,6 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CategoryHorizontalItemList extends StatelessWidget {
-  const CategoryHorizontalItemList({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: 56,
-          width: 56,
-          decoration: ShapeDecoration(
-            color: Colors.red,
-            shadows: const [
-              BoxShadow(
-                color: Colors.red,
-                blurRadius: 25,
-                spreadRadius: -12,
-                offset: Offset(0.0, 15),
-              )
-            ],
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.circular(40),
-            ),
-          ),
-          child: const Icon(
-            Icons.ads_click_outlined,
-            color: Colors.white,
-            size: 26,
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          'همه',
-          style: TextStyle(
-            fontFamily: 'SB',
-            fontSize: 12,
-          ),
-        ),
-      ],
     );
   }
 }
