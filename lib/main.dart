@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:apple_shop/constants/colors.dart';
+import 'package:apple_shop/di/di.dart';
 import 'package:apple_shop/screens/card_screen.dart';
 import 'package:apple_shop/screens/category_screen.dart';
 import 'package:apple_shop/screens/home_screen.dart';
@@ -9,7 +10,10 @@ import 'package:apple_shop/screens/product_list_screen.dart';
 import 'package:apple_shop/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 
-void main(List<String> args) {
+import 'data/dataource/athentication_datasource.dart';
+
+void main(List<String> args) async {
+  await getItInit();
   runApp(MyApp());
 }
 
@@ -28,10 +32,20 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
-        body: IndexedStack(
-          index: selectedBottomNavigationIndex,
-          children: getScreen(),
-        ),
+        body: SafeArea(
+            child: Center(
+          child: TextButton(
+            onPressed: () {
+              var Auth = AthenticationRemote();
+              Auth.register('morteza147258', '12345678', '12345678');
+            },
+            child: Text('click to register'),
+          ),
+        )),
+        // IndexedStack(
+        //   index: selectedBottomNavigationIndex,
+        //   children: getScreen(),
+        // ),
         bottomNavigationBar: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(
