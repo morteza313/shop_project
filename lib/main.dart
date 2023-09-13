@@ -8,9 +8,12 @@ import 'package:apple_shop/screens/category_screen.dart';
 import 'package:apple_shop/screens/home_screen.dart';
 
 import 'package:apple_shop/screens/profile_screen.dart';
+import 'package:apple_shop/util/auth_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
   await getItInit();
   runApp(MyApp());
 }
@@ -31,20 +34,40 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
         body: SafeArea(
-            child: Center(
-          child: TextButton(
-            onPressed: () async {
-              var either = await AthenticationRepository()
-                  .login('morteza000', '12345678');
-              either.fold((l) {
-                print(l);
-              }, (r) {
-                print(r);
-              });
-            },
-            child: Text('click to register'),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    var eithr = await AthenticationRepository()
+                        .login('morteza555', '123456789');
+                  },
+                  child: Text('login'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    AuthManager.logout();
+                  },
+                  child: Text('logout'),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: AuthManager.authChangeNotifire,
+                  builder: (context, value, child) {
+                    if (value == null || value.isEmpty) {
+                      return Text(
+                        'شما وارد نشده اید',
+                        style: TextStyle(fontSize: 20),
+                      );
+                    } else {
+                      return Text('شما وارد شده اید');
+                    }
+                  },
+                )
+              ],
+            ),
           ),
-        )),
+        ),
         // IndexedStack(
         //   index: selectedBottomNavigationIndex,
         //   children: getScreen(),

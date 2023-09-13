@@ -1,7 +1,9 @@
 import 'package:apple_shop/data/dataource/athentication_datasource.dart';
 import 'package:apple_shop/di/di.dart';
 import 'package:apple_shop/util/api_ecxception.dart';
+import 'package:apple_shop/util/auth_manager.dart';
 import 'package:dartz/dartz.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IAuthRepository {
   Future<Either<String, String>> register(
@@ -15,6 +17,7 @@ abstract class IAuthRepository {
 
 class AthenticationRepository implements IAuthRepository {
   final IAthenticationDatasource _datasourse = locator.get();
+  final SharedPreferences _sharedPref = locator.get();
 
   @override
   Future<Either<String, String>> register(
@@ -32,6 +35,7 @@ class AthenticationRepository implements IAuthRepository {
     try {
       String token = await _datasourse.login(identity, password);
       if (token.isNotEmpty) {
+        AuthManager.saveToken(token);
         return right('شما وارد شدید');
       } else {
         return left('خطایی در ورود پیش آمده');
