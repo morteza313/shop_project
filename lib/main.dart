@@ -1,16 +1,14 @@
 import 'dart:ui';
 
 import 'package:apple_shop/constants/colors.dart';
+import 'package:apple_shop/data/repository/authentication_repository.dart';
 import 'package:apple_shop/di/di.dart';
 import 'package:apple_shop/screens/card_screen.dart';
 import 'package:apple_shop/screens/category_screen.dart';
 import 'package:apple_shop/screens/home_screen.dart';
-import 'package:apple_shop/screens/product_detail_screen.dart';
-import 'package:apple_shop/screens/product_list_screen.dart';
+
 import 'package:apple_shop/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'data/dataource/athentication_datasource.dart';
 
 void main(List<String> args) async {
   await getItInit();
@@ -35,9 +33,14 @@ class _MyAppState extends State<MyApp> {
         body: SafeArea(
             child: Center(
           child: TextButton(
-            onPressed: () {
-              var Auth = AthenticationRemote();
-              Auth.register('morteza147258', '12345678', '12345678');
+            onPressed: () async {
+              var either = await AthenticationRepository()
+                  .login('morteza000', '12345678');
+              either.fold((l) {
+                print(l);
+              }, (r) {
+                print(r);
+              });
             },
             child: Text('click to register'),
           ),
