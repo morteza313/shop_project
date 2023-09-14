@@ -1,10 +1,14 @@
+import 'package:apple_shop/bloc/authentication/auth_bloc.dart';
+import 'package:apple_shop/bloc/authentication/auth_event.dart';
+import 'package:apple_shop/bloc/authentication/auth_state.dart';
 import 'package:apple_shop/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
-  final _usernameTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
+  final _usernameTextController = TextEditingController(text: 'morteza888');
+  final _passwordTextController = TextEditingController(text: '123456789');
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -105,19 +109,44 @@ class LoginScreen extends StatelessWidget {
                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text('ورود به حساب کاربری'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(200, 48),
-                          textStyle: TextStyle(
-                            fontFamily: 'sb',
-                            fontSize: 18,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
+                      BlocBuilder<AuthBloc, AuthState>(
+                        builder: (context, state) {
+                          if (state is AithInitState) {
+                            return ElevatedButton(
+                              onPressed: () {
+                                BlocProvider.of<AuthBloc>(context).add(
+                                  AuthLoginRequest(_usernameTextController.text,
+                                      _passwordTextController.text),
+                                );
+                              },
+                              child: Text('ورود به حساب کاربری'),
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(200, 48),
+                                textStyle: TextStyle(
+                                  fontFamily: 'sb',
+                                  fontSize: 18,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            );
+                          }
+                          if (state is AithLoadingState) {
+                            return CircularProgressIndicator();
+                          }
+
+                          if (state is AuthResponseState) {
+                            Text widget = Text('');
+                            state.response.fold((l) {
+                              widget = Text(l);
+                            }, (r) {
+                              widget = Text(r);
+                            });
+                            return widget;
+                          }
+                          return Text('!!!خطای نامشخص');
+                        },
                       ),
                     ],
                   ),

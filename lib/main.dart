@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:apple_shop/bloc/authentication/auth_bloc.dart';
 import 'package:apple_shop/constants/colors.dart';
 import 'package:apple_shop/data/repository/authentication_repository.dart';
 import 'package:apple_shop/di/di.dart';
@@ -11,6 +12,7 @@ import 'package:apple_shop/screens/login_screen.dart';
 import 'package:apple_shop/screens/profile_screen.dart';
 import 'package:apple_shop/util/auth_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main(List<String> args) async {
@@ -34,7 +36,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
-        body: LoginScreen(),
+        body: BlocProvider(
+          create: (context) => AuthBloc(),
+          child: LoginScreen(),
+        ),
         // IndexedStack(
         //   index: selectedBottomNavigationIndex,
         //   children: getScreen(),
