@@ -6,6 +6,7 @@ import 'package:apple_shop/di/di.dart';
 import 'package:apple_shop/screens/card_screen.dart';
 import 'package:apple_shop/screens/category_screen.dart';
 import 'package:apple_shop/screens/home_screen.dart';
+import 'package:apple_shop/screens/login_screen.dart';
 
 import 'package:apple_shop/screens/profile_screen.dart';
 import 'package:apple_shop/util/auth_manager.dart';
@@ -33,41 +34,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    var eithr = await AthenticationRepository()
-                        .login('morteza555', '123456789');
-                  },
-                  child: Text('login'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    AuthManager.logout();
-                  },
-                  child: Text('logout'),
-                ),
-                ValueListenableBuilder(
-                  valueListenable: AuthManager.authChangeNotifire,
-                  builder: (context, value, child) {
-                    if (value == null || value.isEmpty) {
-                      return Text(
-                        'شما وارد نشده اید',
-                        style: TextStyle(fontSize: 20),
-                      );
-                    } else {
-                      return Text('شما وارد شده اید');
-                    }
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
+        body: LoginScreen(),
         // IndexedStack(
         //   index: selectedBottomNavigationIndex,
         //   children: getScreen(),
