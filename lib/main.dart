@@ -36,14 +36,15 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: CustomColors.backgroundScreenColor,
-        body: BlocProvider(
-          create: (context) => AuthBloc(),
-          child: LoginScreen(),
+        body: IndexedStack(
+          index: selectedBottomNavigationIndex,
+          children: getScreen(),
         ),
-        // IndexedStack(
-        //   index: selectedBottomNavigationIndex,
-        //   children: getScreen(),
+        //  BlocProvider(
+        //   create: (context) => AuthBloc(),
+        //   child: LoginScreen(),
         // ),
+
         bottomNavigationBar: ClipRRect(
           child: BackdropFilter(
             filter: ImageFilter.blur(

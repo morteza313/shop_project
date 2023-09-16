@@ -2,13 +2,14 @@ import 'package:apple_shop/bloc/authentication/auth_bloc.dart';
 import 'package:apple_shop/bloc/authentication/auth_event.dart';
 import 'package:apple_shop/bloc/authentication/auth_state.dart';
 import 'package:apple_shop/constants/colors.dart';
+import 'package:apple_shop/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final _usernameTextController = TextEditingController(text: 'morteza888');
-  final _passwordTextController = TextEditingController(text: '123456789');
+  final _passwordTextController = TextEditingController(text: '12345678');
   @override
   Widget build(BuildContext context) {
     return Directionality(
