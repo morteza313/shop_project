@@ -1,11 +1,33 @@
+import 'package:apple_shop/bloc/category_list/category_bloc.dart';
+import 'package:apple_shop/bloc/category_list/category_event.dart';
+import 'package:apple_shop/bloc/category_list/category_state.dart';
+import 'package:apple_shop/data/model/category.dart';
 import 'package:apple_shop/data/repository/category_repository.dart';
+import 'package:apple_shop/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../constants/colors.dart';
 
-class CategoryScreen extends StatelessWidget {
+class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
 
+  @override
+  State<CategoryScreen> createState() => _CategoryScreenState();
+}
+
+class _CategoryScreenState extends State<CategoryScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    BlocProvider.of<CategoryBloc>(context).add(
+      categoryRequestListEvent(),
+    );
+    super.initState();
+  }
+
+  @override
+  List<Category>? list;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,46 +72,46 @@ class CategoryScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: TextButton(
-                onPressed: () async {
-                  var repository = CategoryRepository();
-                  var either = await repository.getCategories();
-                  either.fold((l) {
-                    print(l);
-                  }, (r) {
-                    r.forEach((element) {
-                      print(element.title);
-                    });
-                  });
-                },
-                child: Text('get Data'),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 44),
-              sliver: SliverGrid(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
-                        ),
-                      ),
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoruLoadingState) {
+                  return SliverToBoxAdapter(child: CircularProgressIndicator());
+                }
+                if (state is CategoryResponseState) {
+                  return state.response.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Center(child: Text(l)),
                     );
-                  },
-                ),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20,
-                  crossAxisCount: 2,
-                ),
-              ),
+                  }, (r) {
+                    return ListCategory(
+                      list: r,
+                    );
+                  });
+                }
+                return SliverToBoxAdapter(child: Text('error'));
+              },
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ListCategory extends StatelessWidget {
+  final List<Category>? list;
+  const ListCategory({Key? key, required this.list}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 44),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate(((context, index) {
+          return CachedImage(imageUrl: list![index].thumbnail!);
+        }), childCount: list?.length ?? 0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, mainAxisSpacing: 20, crossAxisSpacing: 20),
       ),
     );
   }

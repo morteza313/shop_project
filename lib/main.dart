@@ -1,19 +1,17 @@
 import 'dart:ui';
 
-import 'package:apple_shop/bloc/authentication/auth_bloc.dart';
+import 'package:apple_shop/bloc/category_list/category_bloc.dart';
 import 'package:apple_shop/constants/colors.dart';
-import 'package:apple_shop/data/repository/authentication_repository.dart';
+
 import 'package:apple_shop/di/di.dart';
 import 'package:apple_shop/screens/card_screen.dart';
 import 'package:apple_shop/screens/category_screen.dart';
 import 'package:apple_shop/screens/home_screen.dart';
-import 'package:apple_shop/screens/login_screen.dart';
 
 import 'package:apple_shop/screens/profile_screen.dart';
-import 'package:apple_shop/util/auth_manager.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +38,7 @@ class _MyAppState extends State<MyApp> {
           index: selectedBottomNavigationIndex,
           children: getScreen(),
         ),
+
         //  BlocProvider(
         //   create: (context) => AuthBloc(),
         //   child: LoginScreen(),
@@ -167,7 +166,10 @@ class _MyAppState extends State<MyApp> {
     return [
       ProfileScreen(),
       CardScreen(),
-      CategoryScreen(),
+      BlocProvider(
+        create: (context) => CategoryBloc(),
+        child: CategoryScreen(),
+      ),
       HomeScreen(),
     ];
   }
