@@ -1,3 +1,4 @@
+import 'package:apple_shop/data/repository/banner_repository.dart';
 import 'package:apple_shop/widgets/category_icon_item_chip.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,19 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: CustomScrollView(
           slivers: [
+            SliverToBoxAdapter(
+              child: ElevatedButton(
+                onPressed: () async {
+                  var response = await BannerRepository().getBanners();
+                  response.fold((l) => print(l), (r) {
+                    r.forEach((element) {
+                      print(element.id);
+                    });
+                  });
+                },
+                child: Text('get banner'),
+              ),
+            ),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(
