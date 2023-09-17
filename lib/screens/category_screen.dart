@@ -1,6 +1,6 @@
-import 'package:apple_shop/bloc/category_list/category_bloc.dart';
-import 'package:apple_shop/bloc/category_list/category_event.dart';
-import 'package:apple_shop/bloc/category_list/category_state.dart';
+import 'package:apple_shop/bloc/category/category_bloc.dart';
+import 'package:apple_shop/bloc/category/category_event.dart';
+import 'package:apple_shop/bloc/category/category_state.dart';
 import 'package:apple_shop/data/model/category.dart';
 import 'package:apple_shop/data/repository/category_repository.dart';
 import 'package:apple_shop/widgets/cached_image.dart';

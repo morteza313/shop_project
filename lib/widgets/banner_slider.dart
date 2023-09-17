@@ -1,10 +1,14 @@
+import 'package:apple_shop/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
+
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../constants/colors.dart';
+import '../data/model/banner.dart';
 
 class BannerSlider extends StatelessWidget {
-  BannerSlider({super.key});
+  List<BannerCampain> bannerList;
+  BannerSlider(this.bannerList, {super.key});
   PageController controller = PageController(viewportFraction: 0.8);
   @override
   Widget build(BuildContext context) {
@@ -15,15 +19,9 @@ class BannerSlider extends StatelessWidget {
           height: 200,
           child: PageView.builder(
             controller: controller,
-            itemCount: 3,
+            itemCount: bannerList.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Container(
-                  color: Colors.red,
-                  height: 200,
-                ),
-              );
+              return CachedImage(imageUrl: bannerList[index].thumbnail!);
             },
           ),
         ),
