@@ -2,7 +2,8 @@ import 'package:apple_shop/bloc/home/home_bloc.dart';
 import 'package:apple_shop/bloc/home/home_event.dart';
 import 'package:apple_shop/bloc/home/home_state.dart';
 import 'package:apple_shop/data/model/banner.dart';
-import 'package:apple_shop/data/repository/banner_repository.dart';
+import 'package:apple_shop/data/model/category.dart';
+
 import 'package:apple_shop/widgets/category_icon_item_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,11 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
           return CustomScrollView(
             slivers: [
               if (state is HomeLoadingState) ...[
-                SliverToBoxAdapter(
-                  child: CircularProgressIndicator(),
+                const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
                 )
               ],
-              _getSearchBox(),
+              const _getSearchBox(),
               if (state is HomeRequestSuccessState) ...[
                 state.bannerList.fold((l) {
                   return SliverToBoxAdapter(
@@ -49,12 +50,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   return _getBanners(r);
                 })
               ],
-              _getCategoryListTitile(),
-              _getCategoryList(),
-              _getBestSellerTitle(),
-              _getBestSellerProduct(),
-              _getMostViewedTitle(),
-              _getMostViewedProduct()
+              const _getCategoryListTitile(),
+              if (state is HomeRequestSuccessState) ...[
+                state.categoryList.fold((l) {
+                  return SliverToBoxAdapter(
+                    child: Text(l),
+                  );
+                }, (r) {
+                  return _getCategoryList(r);
+                })
+              ],
+              const _getBestSellerTitle(),
+              const _getBestSellerProduct(),
+              const _getMostViewedTitle(),
+              const _getMostViewedProduct()
             ],
           );
         },
@@ -108,19 +117,6 @@ class _getMostViewedTitle extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-              'مشاهده همه ',
-              style: TextStyle(
-                fontFamily: 'sb',
-                fontSize: 12,
-                color: CustomColors.blue,
-              ),
-            ),
-            const Spacer(),
             const Text(
               'پر بازدید ترین ها',
               style: TextStyle(
@@ -129,6 +125,19 @@ class _getMostViewedTitle extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه ',
+              style: TextStyle(
+                fontFamily: 'sb',
+                fontSize: 12,
+                color: CustomColors.blue,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -180,19 +189,6 @@ class _getBestSellerTitle extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(
-              width: 10,
-            ),
-            const Text(
-              'مشاهده همه ',
-              style: TextStyle(
-                fontFamily: 'sb',
-                fontSize: 12,
-                color: CustomColors.blue,
-              ),
-            ),
-            const Spacer(),
             const Text(
               'پرفروش ترین ها',
               style: TextStyle(
@@ -201,6 +197,19 @@ class _getBestSellerTitle extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
+            const Spacer(),
+            const Text(
+              'مشاهده همه ',
+              style: TextStyle(
+                fontFamily: 'sb',
+                fontSize: 12,
+                color: CustomColors.blue,
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Image.asset('assets/images/icon_left_categroy.png'),
           ],
         ),
       ),
@@ -209,7 +218,9 @@ class _getBestSellerTitle extends StatelessWidget {
 }
 
 class _getCategoryList extends StatelessWidget {
-  const _getCategoryList({
+  List<Category> categoryList;
+  _getCategoryList(
+    this.categoryList, {
     super.key,
   });
 
@@ -221,12 +232,12 @@ class _getCategoryList extends StatelessWidget {
         child: SizedBox(
           height: 100,
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: categoryList.length,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: CategoryHorizontalItemChip(),
+              return Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: CategoryHorizontalItemChip(categoryList[index]),
               );
             },
           ),
@@ -252,7 +263,7 @@ class _getCategoryListTitile extends StatelessWidget {
           top: 32,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               'دسته بندی',
@@ -310,11 +321,14 @@ class _getSearchBox extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                Image.asset('assets/images/icon_apple_blue.png'),
+                Image.asset('assets/images/icon_search.png'),
+                const SizedBox(
+                  width: 10,
+                ),
                 const Expanded(
                   child: Text(
                     'جستجوی محصولات',
-                    textAlign: TextAlign.end,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'sb',
                       fontSize: 16,
@@ -322,10 +336,7 @@ class _getSearchBox extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Image.asset('assets/images/icon_search.png'),
+                Image.asset('assets/images/icon_apple_blue.png'),
               ],
             ),
           ),

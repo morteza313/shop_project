@@ -9,19 +9,25 @@ import '../data/model/banner.dart';
 class BannerSlider extends StatelessWidget {
   List<BannerCampain> bannerList;
   BannerSlider(this.bannerList, {super.key});
-  PageController controller = PageController(viewportFraction: 0.8);
+  PageController controller = PageController(viewportFraction: 0.9);
   @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         SizedBox(
-          height: 200,
+          height: 177,
           child: PageView.builder(
             controller: controller,
             itemCount: bannerList.length,
             itemBuilder: (context, index) {
-              return CachedImage(imageUrl: bannerList[index].thumbnail!);
+              return Container(
+                child: CachedImage(
+                  imageUrl: bannerList[index].thumbnail!,
+                  radius: 15,
+                ),
+                margin: EdgeInsets.symmetric(horizontal: 6),
+              );
             },
           ),
         ),
@@ -30,8 +36,8 @@ class BannerSlider extends StatelessWidget {
           child: SmoothPageIndicator(
             effect: const ExpandingDotsEffect(
               expansionFactor: 5,
-              dotHeight: 8,
-              dotWidth: 8,
+              dotHeight: 6,
+              dotWidth: 6,
               dotColor: Colors.white,
               activeDotColor: CustomColors.blueIndicator,
             ),

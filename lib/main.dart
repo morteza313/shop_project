@@ -171,9 +171,12 @@ class _MyAppState extends State<MyApp> {
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),
       ),
-      BlocProvider(
-        create: (context) => HomeBloc(),
-        child: HomeScreen(),
+      Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocProvider(
+          create: (context) => HomeBloc(),
+          child: HomeScreen(),
+        ),
       ),
     ];
   }
